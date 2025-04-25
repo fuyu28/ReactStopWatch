@@ -1,4 +1,4 @@
-import { useStopwatch } from "../hooks/useStopwatch";
+import useStopwatch from "../hooks/useStopwatch";
 import Timedisplay from "./TimeDisplay";
 
 export default function StopWatch() {
