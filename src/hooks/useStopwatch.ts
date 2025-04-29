@@ -82,6 +82,6 @@ export default function useStopwatch() {
     handleStartStop,
     handleLap,
     handleReset,
-    showTime: now && startTime
+    showTime: !!now && !!startTime
   };
 }
