@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 
 export default function useStopwatch() {
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -7,17 +7,17 @@ export default function useStopwatch() {
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  function formatTime(seconds: number) {
+  const formatTime = useCallback((seconds: number) => {
     const hour = String(Math.floor(seconds / 3600)).padStart(2, "0");
     const minute = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
     const second = String(Math.floor(seconds % 60)).padStart(2, "0");
     const milliseconds = String(Math.floor((seconds % 1) * 1000)).padStart(
       3,
       "0"
-    );
+    ).slice(0, 2);
 
     return `${hour}:${minute}:${second}.${milliseconds}`;
-  }
+  }, []);
 
   function clearTimer() {
     if (intervalRef.current) {
@@ -51,7 +51,7 @@ export default function useStopwatch() {
     }
 
     return () => clearTimer();
-  }, [isRunning, now]);
+  }, [isRunning]);
 
   function handleLap() {
     if (startTime != null && now != null) {
